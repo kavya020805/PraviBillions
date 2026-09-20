@@ -366,8 +366,8 @@ export default function FamiliesPage() {
                           {language === 'gu' ? 'તમારું કુટુંબ' : language === 'hi' ? 'आपका परिवार' : 'Your Household'}
                         </Badge>
                       )}
-                      <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider bg-slate-50">
-                        {fam.caste_category}
+                      <Badge variant="outline" className={`text-[10px] font-bold tracking-wider ${(fam as any).is_masked ? 'bg-amber-50 text-amber-950 border-amber-300 font-sans' : 'bg-slate-50 uppercase font-mono'}`}>
+                        {(fam as any).caste_display || fam.caste_category}
                       </Badge>
                     </div>
                   </div>
@@ -380,7 +380,7 @@ export default function FamiliesPage() {
                     </p>
                     <p className="flex items-center gap-1.5 text-[11px]">
                       <Home className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      {fam.house_type === 'kutcha' ? (language === 'gu' ? 'કાચું મકાન' : language === 'hi' ? 'कच्चा मकान' : 'Kutcha Dwelling') : (language === 'gu' ? 'પાકું મકાન' : language === 'hi' ? 'पक्का मकान' : 'Pucca Dwelling')} · {fam.land_owned_acres > 0 ? (language === 'gu' ? `${fam.land_owned_acres} એકર જમીન` : language === 'hi' ? `${fam.land_owned_acres} एकड़ भूमि` : `${fam.land_owned_acres} Acres Land`) : (language === 'gu' ? 'જમીનવિહોણા' : language === 'hi' ? 'भूमिहीन' : 'Landless')}
+                      {fam.house_type === 'kutcha' ? (language === 'gu' ? 'કાચું મકાન' : language === 'hi' ? 'कच्चा मकान' : 'Kutcha Dwelling') : (language === 'gu' ? 'પાકું મકાન' : language === 'hi' ? 'पक्का मकान' : 'Pucca Dwelling')} · {(fam as any).land_display || (fam.land_owned_acres > 0 ? `${fam.land_owned_acres} Acres Land` : 'Landless')}
                     </p>
                   </div>
 
@@ -392,7 +392,7 @@ export default function FamiliesPage() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <IndianRupee className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="font-medium text-slate-700">{formatCurrency(fam.household_income_annual)}</span>
+                      <span className="font-medium text-slate-700">{(fam as any).income_display || formatCurrency(fam.household_income_annual)}</span>
                     </div>
                   </div>
 

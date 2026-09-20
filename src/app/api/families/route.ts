@@ -3,7 +3,8 @@ import { getAllFamilies } from '@/lib/data';
 import { getUniqueEligibleSchemeIds } from '@/lib/rules-engine';
 
 import { getServerUser } from '@/lib/auth-server';
-import { maskPhoneNumber, maskAddress } from '@/lib/privacy';
+import { maskPhoneNumber, maskAddress, maskCaste, maskIncome, maskLand } from '@/lib/privacy';
+import { formatCurrency } from '@/lib/utils';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -33,13 +34,16 @@ export async function GET(request: Request) {
     families = families.filter(f => f.income_band === incomeBand);
   }
 
-  // Add eligibility count and sanitize PII according to DPDP Act 2023
+  // Add eligibility count and sanitize PII & sensitive socio-economic data according to DPDP Act 2023
   const familiesWithEligibility = families.map(f => {
     const isOwner = Boolean(user && user.role === 'citizen' && user.family_id === f.family_id);
     return {
       ...f,
       phone_number: isOwner ? f.phone_number : maskPhoneNumber(f.phone_number),
       address: isOwner ? f.address : maskAddress(f.address, f.district),
+      caste_display: maskCaste(f.caste_category, isOwner),
+      income_display: maskIncome(f.household_income_annual, f.income_band, isOwner),
+      land_display: maskLand(f.land_owned_acres, isOwner),
       eligible_scheme_count: getUniqueEligibleSchemeIds(f).length,
       head_name: f.members.find(m => m.relation_to_head === 'head')?.name || 'Unknown',
       member_count: f.members.filter(m => m.is_alive).length,

@@ -411,8 +411,8 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                     <Badge variant="outline" className="font-mono text-xs bg-amber-50 text-amber-950 border-amber-300 font-bold">
                       GJ-{family.family_id}
                     </Badge>
-                    <Badge className="bg-blue-100 text-blue-900 border-blue-300 text-xs font-bold">
-                      {family.caste_category.toUpperCase()} {language === 'gu' ? 'કેટેગરી' : language === 'hi' ? 'श्रेणी' : 'Category'}
+                    <Badge className={`text-xs font-bold ${(family as any).is_masked ? 'bg-amber-100 text-amber-950 border-amber-300' : 'bg-blue-100 text-blue-900 border-blue-300'}`}>
+                      {(family as any).caste_display || `${family.caste_category.toUpperCase()} ${language === 'gu' ? 'કેટેગરી' : language === 'hi' ? 'श्रेणी' : 'Category'}`}
                     </Badge>
                     <Badge variant="outline" className={`text-xs font-bold ${family.income_band === 'bpl' || family.income_band === 'aay' ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-800'}`}>
                       {family.income_band.toUpperCase()} {language === 'gu' ? 'આવક જૂથ' : language === 'hi' ? 'आय वर्ग' : 'Income Band'}
@@ -435,10 +435,10 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                   <span>
                     <strong className="font-bold">{language === 'gu' ? 'DPDP એક્ટ ૨૦૨૩ ગોપનીયતા સુરક્ષા:' : language === 'hi' ? 'DPDP अधिनियम 2023 गोपनीयता संरक्षण:' : 'DPDP Act 2023 Privacy Redaction:'}</strong>{' '}
                     {language === 'gu'
-                      ? 'વહીવટી અને અધિકારી દૃશ્ય માટે નાગરિક ફોન નંબર, ચોક્કસ શેરી સરનામું અને જન્મતારીખ છુપાવેલ છે.'
+                      ? 'વહીવટી અને અધિકારી દૃશ્ય માટે નાગરિક ફોન નંબર, સરનામું, જન્મતારીખ, વાર્ષિક આવક, જ્ઞાતિ અને તબીબી વિગતો છુપાવેલ છે.'
                       : language === 'hi'
-                      ? 'प्रशासनिक एवं अधिकारी अवलोकन हेतु नागरिक फोन नंबर, सटीक सड़क का पता और जन्मतिथि छिपाई गई है।'
-                      : 'Citizen phone number, street address, and exact DOB are redacted for administrative oversight.'}
+                      ? 'प्रशासनिक एवं अधिकारी अवलोकन हेतु नागरिक फोन नंबर, पता, जन्मतिथि, वार्षिक आय, जाति और चिकित्सा विवरण छिपाए गए हैं।'
+                      : 'Citizen phone number, street address, exact DOB, annual income figures, caste classification, and medical records are redacted for administrative oversight.'}
                   </span>
                 </div>
               )}
@@ -513,7 +513,9 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                 </div>
                 <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-2xs text-center min-w-[90px]">
                   <p className="text-[10px] uppercase font-bold text-slate-500">{language === 'gu' ? 'વાર્ષિક આવક' : language === 'hi' ? 'वार्षिक आय' : 'Annual Income'}</p>
-                  <p className="text-lg font-black text-emerald-800 mt-0.5">{formatCurrency(family.household_income_annual)}</p>
+                  <p className={`font-black text-emerald-800 mt-0.5 ${(family as any).is_masked ? 'text-xs' : 'text-lg'}`}>
+                    {(family as any).income_display || formatCurrency(family.household_income_annual)}
+                  </p>
                 </div>
                 <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-2xs text-center min-w-[90px]">
                   <p className="text-[10px] uppercase font-bold text-slate-500">{language === 'gu' ? 'સક્રિય યોજનાઓ' : language === 'hi' ? 'सक्रिय योजनाएं' : 'Active Schemes'}</p>
@@ -808,12 +810,12 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                           <div className="flex items-center gap-1.5 flex-wrap">
                             {m.disability_status && (
                               <Badge variant="outline" className="text-[10px] bg-rose-50 text-rose-700 border-rose-200 font-bold">
-                                Disability ({m.disability_percentage || 40}%)
+                                {(family as any).is_masked ? 'Specially Abled (Certified)' : `Disability (${m.disability_percentage || 40}%)`}
                               </Badge>
                             )}
                             {m.is_pregnant && (
                               <Badge variant="outline" className="text-[10px] bg-pink-50 text-pink-700 border-pink-200 font-bold">
-                                Pregnant
+                                {(family as any).is_masked ? 'Maternal Welfare (Protected)' : 'Pregnant'}
                               </Badge>
                             )}
                             {!m.is_alive && (

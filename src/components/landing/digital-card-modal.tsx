@@ -139,7 +139,7 @@ export function DigitalCardModal({ isOpen, onClose, family }: DigitalCardModalPr
 
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 rounded bg-amber-500 text-slate-950 text-xs font-bold font-mono">
-                {fam.caste_category.toUpperCase()}
+                {(fam as any).caste_display || ((fam as any).is_masked ? 'PROTECTED' : fam.caste_category.toUpperCase())}
               </span>
               <span className="px-2.5 py-1 rounded bg-emerald-600 text-white text-xs font-bold font-mono">
                 {fam.income_band.toUpperCase()}

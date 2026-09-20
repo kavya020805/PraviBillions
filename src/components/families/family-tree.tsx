@@ -135,12 +135,12 @@ export function FamilyTree({ family, eligibleSchemes = [], onSelectMemberForSimu
 
             {m.disability_status && (
               <span className="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 font-bold border border-rose-200">
-                ♿ Disability ({m.disability_percentage || 40}%)
+                ♿ {(family as any).is_masked ? 'Specially Abled (Certified)' : `Disability (${m.disability_percentage || 40}%)`}
               </span>
             )}
             {m.is_pregnant && (
               <span className="px-2 py-0.5 rounded-md bg-pink-100 text-pink-800 font-bold border border-pink-200">
-                🤰 Pregnant Mother
+                🤰 {(family as any).is_masked ? 'Maternal Welfare (Protected)' : 'Pregnant Mother'}
               </span>
             )}
             {age >= 60 && (

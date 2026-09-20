@@ -3,6 +3,7 @@
 // ============================================================
 
 import type { Family, FamilyMember, DuplicatePair } from '@/lib/types';
+import { formatCurrency } from '@/lib/utils';
 
 /**
  * Redacts a 10-digit Indian phone number to prevent unauthorized citizen tracking.
@@ -20,7 +21,7 @@ export function maskPhoneNumber(phone?: string | null): string {
 /**
  * Redacts specific residential door/street information while retaining the civic locality,
  * complying with Digital Personal Data Protection (DPDP) Act 2023 guidelines for public administrators.
- * Example: '42, Mahatma Gandhi Road, Navrangpura' -> '[Street Redacted · DPDP Act], Navrangpura'
+ * Example: '42, Mahatma Gandhi Road, Navrangpura' -> '[Street Address Redacted · DPDP Act], Navrangpura'
  */
 export function maskAddress(address?: string | null, district?: string): string {
   if (!address) return district ? `[Street Redacted], ${district}` : '[Street Redacted]';
@@ -50,6 +51,64 @@ export function maskDob(dob?: string | null): string {
 }
 
 /**
+ * Redacts specific caste / community identifiers to prevent social profiling,
+ * bias, and discrimination in administrative and public interfaces.
+ * Complies with Supreme Court privacy principles and DPDP Act 2023 sensitive categories.
+ * Example: 'obc' -> '[Protected Category · Verified for Entitlements]'
+ */
+export function maskCaste(caste?: string | null, isOwner = false): string {
+  if (isOwner && caste) {
+    return caste.toUpperCase();
+  }
+  return 'Protected Category';
+}
+
+/**
+ * Redacts exact annual household financial earnings to protect personal economic privacy,
+ * while preserving verified civic entitlement income bands (BPL, AAY, LIG, etc.)
+ * Example: 110000 -> '₹ •••••• (Verified: LIG)'
+ */
+export function maskIncome(income: number, band: string, isOwner = false): string {
+  if (isOwner) {
+    return formatCurrency(income);
+  }
+  return `₹ •••••• (${band.toUpperCase()} Verified)`;
+}
+
+/**
+ * Redacts exact agricultural land acreage to prevent asset targeting and predatory solicitation.
+ * Example: 1.5 -> 'Agricultural Landholder (Protected RoR)'
+ */
+export function maskLand(acres: number, isOwner = false): string {
+  if (isOwner) {
+    return acres > 0 ? `${acres} Acres Land` : 'Landless';
+  }
+  return acres > 0 ? 'Landholder (RoR Protected)' : 'Landless (Verified)';
+}
+
+/**
+ * Redacts clinical disability percentages to safeguard sensitive medical records.
+ */
+export function maskDisability(disability_status: boolean, percentage?: number, isOwner = false): string {
+  if (!disability_status) return '';
+  if (isOwner) {
+    return `Disability (${percentage || 40}%)`;
+  }
+  return 'Specially Abled (Certified)';
+}
+
+/**
+ * Redacts pregnancy status to protect maternal health privacy.
+ */
+export function maskPregnancy(is_pregnant?: boolean, isOwner = false): string {
+  if (!is_pregnant) return '';
+  if (isOwner) {
+    return 'Pregnant Mother';
+  }
+  return 'Maternal Welfare Benefit (Protected)';
+}
+
+/**
  * Mask an individual family member's sensitive demographic identifiers.
  */
 export function maskMemberForRole(member: FamilyMember, isOwner: boolean): FamilyMember {
@@ -66,6 +125,9 @@ export function maskMemberForRole(member: FamilyMember, isOwner: boolean): Famil
 export type ProtectedFamily = Family & {
   is_masked?: boolean;
   mask_reason?: string;
+  caste_display?: string;
+  income_display?: string;
+  land_display?: string;
 };
 
 /**
@@ -73,13 +135,17 @@ export type ProtectedFamily = Family & {
  * - If requester is the verified citizen owner of this household (user.family_id === family.family_id),
  *   they receive full unredacted data.
  * - If requester is an administrator, talati officer, or unauthorized third-party,
- *   sensitive fields (phone number, exact street address, and exact day/month of birth) are automatically redacted.
+ *   sensitive fields (phone number, exact street address, exact day/month of birth, exact annual income,
+ *   caste community classification, and landholding specifics) are automatically redacted.
  */
 export function maskFamilyForRole(family: Family, isOwner: boolean): ProtectedFamily {
   if (isOwner) {
     return {
       ...family,
       is_masked: false,
+      caste_display: family.caste_category.toUpperCase(),
+      income_display: formatCurrency(family.household_income_annual),
+      land_display: family.land_owned_acres > 0 ? `${family.land_owned_acres} Acres Land` : 'Landless',
     };
   }
 
@@ -89,38 +155,56 @@ export function maskFamilyForRole(family: Family, isOwner: boolean): ProtectedFa
     address: maskAddress(family.address, family.district),
     members: family.members.map(m => maskMemberForRole(m, false)),
     is_masked: true,
-    mask_reason: 'DPDP Act 2023: Citizen phone, street address, and exact DOB are redacted for administrative personnel.',
+    caste_display: maskCaste(family.caste_category, false),
+    income_display: maskIncome(family.household_income_annual, family.income_band, false),
+    land_display: maskLand(family.land_owned_acres, false),
+    mask_reason: 'DPDP Act 2023: Citizen phone, street address, exact DOB, annual income, caste classification, and medical data are redacted for administrative personnel.',
   };
 }
 
 /**
  * Protects duplicate pairs viewed by administrators.
- * Masks raw phone numbers, street addresses, and head DOBs in field comparisons
+ * Masks raw phone numbers, street addresses, head DOBs, income, and caste in field comparisons
  * while leaving match levels ('exact' | 'near' | 'different') and scoring intact.
  */
 export function maskDuplicatePairForAuditor(pair: DuplicatePair): DuplicatePair {
   return {
     ...pair,
     field_comparison: pair.field_comparison.map(fc => {
-      if (fc.field_name.toLowerCase().includes('phone')) {
+      const fieldLower = fc.field_name.toLowerCase();
+      if (fieldLower.includes('phone')) {
         return {
           ...fc,
           value_a: maskPhoneNumber(fc.value_a),
           value_b: maskPhoneNumber(fc.value_b),
         };
       }
-      if (fc.field_name.toLowerCase().includes('address')) {
+      if (fieldLower.includes('address')) {
         return {
           ...fc,
           value_a: maskAddress(fc.value_a),
           value_b: maskAddress(fc.value_b),
         };
       }
-      if (fc.field_name.toLowerCase().includes('dob')) {
+      if (fieldLower.includes('dob')) {
         return {
           ...fc,
           value_a: maskDob(fc.value_a),
           value_b: maskDob(fc.value_b),
+        };
+      }
+      if (fieldLower.includes('caste')) {
+        return {
+          ...fc,
+          value_a: maskCaste(fc.value_a),
+          value_b: maskCaste(fc.value_b),
+        };
+      }
+      if (fieldLower.includes('income')) {
+        return {
+          ...fc,
+          value_a: '₹ •••••• (Protected)',
+          value_b: '₹ •••••• (Protected)',
         };
       }
       return fc;
