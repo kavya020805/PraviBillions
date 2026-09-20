@@ -196,8 +196,9 @@ export function DigitalCardModal({ isOpen, onClose, family }: DigitalCardModalPr
                 </thead>
                 <tbody className="divide-y divide-slate-200 bg-white">
                   {fam.members.map((m) => {
-                    const birthYear = new Date(m.dob).getFullYear();
-                    const age = Math.max(0, 2026 - birthYear);
+                    const yearMatch = m.dob?.match(/^(\d{4})/);
+                    const birthYear = yearMatch ? parseInt(yearMatch[1], 10) : new Date(m.dob).getFullYear();
+                    const age = !isNaN(birthYear) ? Math.max(0, 2026 - birthYear) : 0;
                     return (
                       <tr key={m.member_id} className="hover:bg-slate-50">
                         <td className="p-2 font-mono text-slate-500">{m.member_id}</td>

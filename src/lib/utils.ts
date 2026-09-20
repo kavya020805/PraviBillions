@@ -68,7 +68,21 @@ export function generateMemberId(): string {
  * Calculate age from DOB string.
  */
 export function calculateAge(dob: string): number {
+  if (!dob) return 0;
+  // If masked like '1984-**-**'
+  const yearMatch = dob.match(/^(\d{4})/);
+  if (dob.includes('*') && yearMatch) {
+    const birthYear = parseInt(yearMatch[1], 10);
+    const today = new Date();
+    return Math.max(0, today.getFullYear() - birthYear);
+  }
   const birth = new Date(dob);
+  if (isNaN(birth.getTime())) {
+    if (yearMatch) {
+      return Math.max(0, new Date().getFullYear() - parseInt(yearMatch[1], 10));
+    }
+    return 0;
+  }
   const today = new Date();
   let age = today.getFullYear() - birth.getFullYear();
   const m = today.getMonth() - birth.getMonth();
@@ -82,7 +96,13 @@ export function calculateAge(dob: string): number {
  * Format a date string to a readable format.
  */
 export function formatDate(dateStr: string): string {
+  if (!dateStr) return '';
+  if (dateStr.includes('*')) {
+    const yearMatch = dateStr.match(/^(\d{4})/);
+    return yearMatch ? `${yearMatch[1]}-**-**` : '****-**-**';
+  }
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
   return date.toLocaleDateString('en-IN', {
     day: '2-digit',
     month: 'short',

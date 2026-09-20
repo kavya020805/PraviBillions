@@ -175,6 +175,10 @@ export default function FamiliesPage() {
                     <Badge className="bg-amber-100 text-amber-950 border-amber-300 text-[11px] font-bold">
                       {language === 'gu' ? '૩૩ જિલ્લાઓ' : language === 'hi' ? '33 जिले' : '33 Districts'}
                     </Badge>
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-900 border-emerald-300 text-[10px] font-bold flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                      {language === 'gu' ? 'DPDP એક્ટ ૨૦૨૩ ગોપનીયતા રક્ષિત' : language === 'hi' ? 'DPDP 2023 गोपनीयता रक्षित' : 'DPDP Act 2023 Masked'}
+                    </Badge>
                   </div>
                   <p className="text-xs text-slate-500 font-medium">
                     {language === 'gu'

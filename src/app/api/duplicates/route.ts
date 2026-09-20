@@ -4,6 +4,8 @@ import { updateDuplicateStatusInSupabase } from '@/lib/supabase/db';
 import { getServerUser } from '@/lib/auth-server';
 import type { DuplicateWeights, DuplicateStatus } from '@/lib/types';
 
+import { maskDuplicatePairForAuditor } from '@/lib/privacy';
+
 export async function GET(request: Request) {
   // Check authorization: citizens are not authorized to view cross-household duplicate audits
   const user = await getServerUser();
@@ -37,12 +39,15 @@ export async function GET(request: Request) {
     pairs = pairs.filter(p => p.status === statusFilter);
   }
 
+  // Redact sensitive personal data (phone, address, head DOB) for administrative audit view
+  const safePairs = pairs.map(maskDuplicatePairForAuditor);
+
   return NextResponse.json({
     total_pairs: allPairs.length,
     pending: allPairs.filter(p => p.status === 'pending').length,
     confirmed: allPairs.filter(p => p.status === 'confirmed').length,
     false_positives: allPairs.filter(p => p.status === 'false_positive').length,
-    pairs,
+    pairs: safePairs,
   });
 }
 
@@ -81,7 +86,7 @@ export async function POST(request: Request) {
       pending: allPairs.filter(p => p.status === 'pending').length,
       confirmed: allPairs.filter(p => p.status === 'confirmed').length,
       false_positives: allPairs.filter(p => p.status === 'false_positive').length,
-      pairs: allPairs,
+      pairs: allPairs.map(maskDuplicatePairForAuditor),
     });
   }
 
@@ -102,11 +107,12 @@ export async function POST(request: Request) {
       success: true,
       pair_id,
       new_status: status,
-      pair: updatedPair,
+      pair: updatedPair ? maskDuplicatePairForAuditor(updatedPair) : undefined,
       total_pairs: allPairs.length,
       pending: allPairs.filter(p => p.status === 'pending').length,
       confirmed: allPairs.filter(p => p.status === 'confirmed').length,
       false_positives: allPairs.filter(p => p.status === 'false_positive').length,
+      pairs: allPairs.map(maskDuplicatePairForAuditor),
     });
   }
 

@@ -3,6 +3,9 @@ import { getFamilyById, getEventLog } from '@/lib/data';
 import { evaluateEligibility, getUniqueEligibleSchemeIds } from '@/lib/rules-engine';
 import { schemeRules } from '@/lib/schemes';
 
+import { getServerUser } from '@/lib/auth-server';
+import { maskFamilyForRole } from '@/lib/privacy';
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ familyId: string }> }
@@ -28,6 +31,11 @@ export async function GET(
   const eligibleSchemeIds = getUniqueEligibleSchemeIds(family);
   const eventHistory = getEventLog(familyId);
 
+  // Authenticate requester to enforce DPDP Act 2023 privacy redaction
+  const user = await getServerUser();
+  const isOwner = Boolean(user && user.role === 'citizen' && user.family_id === familyId);
+  const safeFamily = maskFamilyForRole(family, isOwner);
+
   // Enrich eligibility with full scheme details
   const eligibleSchemes = eligibleSchemeIds.map(id => {
     const scheme = schemeRules.find(s => s.id === id)!;
@@ -43,7 +51,7 @@ export async function GET(
   });
 
   return NextResponse.json({
-    family,
+    family: safeFamily,
     eligible_schemes: eligibleSchemes,
     eligible_count: eligibleSchemeIds.length,
     event_history: eventHistory,

@@ -92,11 +92,17 @@ export async function POST(request: Request) {
       }
     }
 
+    const currentUser = await getServerUser();
+    const isOwner = Boolean(currentUser && currentUser.role === 'citizen' && currentUser.family_id === family_id);
+    const { maskFamilyForRole } = await import('@/lib/privacy');
+    const safeFamilyBefore = maskFamilyForRole(family, isOwner);
+    const safeFamilyAfter = maskFamilyForRole(updatedFamily, isOwner);
+
     return NextResponse.json({
       event_type,
       event_label: lifeEvent.label,
-      family_before: family,
-      family_after: updatedFamily,
+      family_before: safeFamilyBefore,
+      family_after: safeFamilyAfter,
       diff: {
         gained: diff.gained.map(g => ({
           scheme_id: g.scheme_id,

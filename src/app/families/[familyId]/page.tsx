@@ -35,7 +35,7 @@ import { ShinyText } from '@/components/effects/shiny-text';
 import type { Family, SchemeRule, LifeEventLogEntry, Gender } from '@/lib/types';
 
 interface FamilyDetailResponse {
-  family: Family;
+  family: Family & { is_masked?: boolean; mask_reason?: string };
   eligible_schemes: (SchemeRule & {
     eligible_members?: { member_id?: string; member_name?: string }[];
   })[];
@@ -428,15 +428,54 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                 </div>
               </div>
 
+              {/* DPDP Act 2023 Privacy Notice Banner */}
+              {(family as any).is_masked && (
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-300 text-amber-950 text-xs">
+                  <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>
+                    <strong className="font-bold">{language === 'gu' ? 'DPDP એક્ટ ૨૦૨૩ ગોપનીયતા સુરક્ષા:' : language === 'hi' ? 'DPDP अधिनियम 2023 गोपनीयता संरक्षण:' : 'DPDP Act 2023 Privacy Redaction:'}</strong>{' '}
+                    {language === 'gu'
+                      ? 'વહીવટી અને અધિકારી દૃશ્ય માટે નાગરિક ફોન નંબર, ચોક્કસ શેરી સરનામું અને જન્મતારીખ છુપાવેલ છે.'
+                      : language === 'hi'
+                      ? 'प्रशासनिक एवं अधिकारी अवलोकन हेतु नागरिक फोन नंबर, सटीक सड़क का पता और जन्मतिथि छिपाई गई है।'
+                      : 'Citizen phone number, street address, and exact DOB are redacted for administrative oversight.'}
+                  </span>
+                </div>
+              )}
+
+              {user?.family_id === family.family_id && (
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs">
+                  <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span>
+                    <strong className="font-bold">{language === 'gu' ? 'તમારો અધિકૃત પારિવારિક રેકોર્ડ:' : language === 'hi' ? 'आपका प्राधिकृत पारिवारिक रिकॉर्ड:' : 'Your Authorized Household Record:'}</strong>{' '}
+                    {language === 'gu'
+                      ? 'તમે તમારા પરિવારના નોંધાયેલા સભ્ય હોવાથી સંપૂર્ણ માહિતી જોઈ શકો છો.'
+                      : language === 'hi'
+                      ? 'आप अपने परिवार के पंजीकृत सदस्य होने के नाते संपूर्ण असंशोधित विवरण देख सकते हैं।'
+                      : 'Full unredacted personal identifiers are visible to you as the authenticated household owner.'}
+                  </span>
+                </div>
+              )}
+
               {/* Geographic & Civic Metadata */}
               <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs text-slate-600">
                 <span className="flex items-center gap-1.5 font-medium">
                   <MapPin className="w-3.5 h-3.5 text-slate-400" />
                   {family.address}, {family.district} ({family.pincode})
+                  {(family as any).is_masked && (
+                    <Badge variant="outline" className="text-[9px] py-0 px-1.5 bg-amber-100/70 text-amber-900 border-amber-300 font-mono font-bold">
+                      <Lock className="w-2.5 h-2.5 mr-0.5 inline" /> REDACTED
+                    </Badge>
+                  )}
                 </span>
                 <span className="flex items-center gap-1.5 font-medium">
                   <Phone className="w-3.5 h-3.5 text-slate-400" />
-                  +91 {family.phone_number}
+                  {family.phone_number.startsWith('+91') ? family.phone_number : `+91 ${family.phone_number}`}
+                  {(family as any).is_masked && (
+                    <Badge variant="outline" className="text-[9px] py-0 px-1.5 bg-amber-100/70 text-amber-900 border-amber-300 font-mono font-bold">
+                      <Lock className="w-2.5 h-2.5 mr-0.5 inline" /> MASKED
+                    </Badge>
+                  )}
                 </span>
                 <span className="flex items-center gap-1.5 font-medium text-slate-700">
                   {language === 'gu' ? 'વિસ્તાર:' : language === 'hi' ? 'क्षेत्र:' : 'Area:'} {family.area_type === 'rural' ? (language === 'gu' ? '🌾 ગ્રામીણ' : language === 'hi' ? '🌾 ग्रामीण' : '🌾 Rural (Gramin)') : (language === 'gu' ? '🏙️ શહેરી' : language === 'hi' ? '🏙️ शहरी' : '🏙️ Urban')}
@@ -755,6 +794,9 @@ export default function FamilyDetailPage({ params }: { params: Promise<{ familyI
                         </TableCell>
                         <TableCell className="text-xs">
                           {calculateAge(m.dob)} yrs · {m.gender}
+                          <span className="block text-[10px] text-muted-foreground">
+                            {m.dob?.includes('*') ? `Born ${m.dob.substring(0, 4)} (Masked)` : `DOB: ${m.dob}`}
+                          </span>
                         </TableCell>
                         <TableCell className="text-xs capitalize">
                           {m.marital_status}

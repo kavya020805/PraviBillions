@@ -856,10 +856,16 @@ export default function IntegrityPage() {
               </div>
 
               {/* Side-by-Side Field Table */}
-              <div>
-                <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">
-                  {language === 'gu' ? 'ફીલ્ડ-દર-ફીલ્ડ તુલના મેટ્રિક્સ' : language === 'hi' ? 'फ़ील्ड-दर-फ़ील्ड तुलना मैट्रिक्स' : 'Field-by-Field Discrepancy Matrix'}
-                </h4>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                    {language === 'gu' ? 'ફીલ્ડ-દર-ફીલ્ડ તુલના મેટ્રિક્સ' : language === 'hi' ? 'फ़ील्ड-दर-फ़ील्ड तुलना मैट्रिक्स' : 'Field-by-Field Discrepancy Matrix'}
+                  </h4>
+                  <Badge variant="outline" className="text-[10px] bg-amber-50 text-amber-900 border-amber-300 font-medium">
+                    <Lock className="w-2.5 h-2.5 mr-1 text-amber-600 inline" />
+                    DPDP Act 2023 Masked
+                  </Badge>
+                </div>
                 <div className="rounded-lg border border-border overflow-hidden">
                   <Table>
                     <TableHeader className="bg-slate-50">

@@ -33,7 +33,11 @@ export function FamilyTree({ family, eligibleSchemes = [], onSelectMemberForSimu
   const spouse = family.members.find(m => m.relation_to_head === 'spouse');
   const children = family.members
     .filter(m => m.relation_to_head === 'child')
-    .sort((a, b) => new Date(a.dob).getTime() - new Date(b.dob).getTime());
+    .sort((a, b) => {
+      const yearA = parseInt(a.dob.match(/^(\d{4})/)?.[1] || '0', 10);
+      const yearB = parseInt(b.dob.match(/^(\d{4})/)?.[1] || '0', 10);
+      return yearA - yearB;
+    });
   const others = family.members.filter(m => m.relation_to_head === 'other');
 
   // Compute targeted welfare schemes for a given member
@@ -111,7 +115,7 @@ export function FamilyTree({ family, eligibleSchemes = [], onSelectMemberForSimu
               </Badge>
             </div>
             <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-              {age} years old · Born {m.dob}
+              {age} {language === 'gu' ? 'વર્ષ' : language === 'hi' ? 'वर्ष' : 'years old'} · {m.dob?.includes('*') ? `${language === 'gu' ? 'જન્મ વર્ષ' : language === 'hi' ? 'जन्म वर्ष' : 'Born'} ${m.dob.substring(0, 4)} (${language === 'gu' ? 'ગોપનીય સુરક્ષિત' : language === 'hi' ? 'गोपनीय' : 'Protected'})` : `${language === 'gu' ? 'જન્મ' : language === 'hi' ? 'जन्म' : 'Born'} ${m.dob}`}
             </p>
           </div>
 
