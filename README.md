@@ -2,79 +2,103 @@
 ### Proactive Citizen Welfare & Entitlement Delivery Platform
 > *One Family, One Identity, Complete Welfare — એક કુટુંબ, એક ઓળખ, સર્વાંગી કલ્યાણ*
 
+[![Next.js 16](https://img.shields.io/badge/Next.js-16.3.5-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=flat-square&logo=postgresql)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![DPDP Act 2023](https://img.shields.io/badge/Compliance-DPDP_Act_2023-emerald?style=flat-square)](https://www.meity.gov.in/)
+[![GIGW 3.0](https://img.shields.io/badge/Accessibility-GIGW_3.0_/_WCAG_2.1-orange?style=flat-square)](https://guidelines.india.gov.in/)
+
 ---
 
 ## Executive Overview
 
-The **Gujarat Family ID Copilot** is a next-generation civic operating system and social protection intelligence engine designed to fundamentally transform how public welfare is administered. Traditional governance models operate reactively: citizens must discover complex government programs, assemble repetitive paperwork, navigate bureaucratic silos, and submit multiple individual applications across dispersed government departments. Families often miss out on crucial life-changing benefits simply due to lack of awareness or administrative hurdles.
+The **Gujarat Family ID Copilot** is a next-generation civic operating system and social protection intelligence engine designed to fundamentally transform how public welfare is administered across Gujarat's 33 districts. Traditional governance operates reactively: citizens must discover complex government programs, assemble repetitive paperwork, navigate bureaucratic silos, and submit multiple individual applications across dispersed government departments. Families frequently miss out on life-changing benefits simply due to lack of awareness or administrative friction.
 
 This platform inverts that paradigm into a **proactive, event-driven welfare delivery model**. By establishing a unified 12-digit Family Registry linked to declarative rule engines, the system continuously evaluates household entitlements. When real-world life transitions occur—such as the birth of a child, a senior reaching age 60, spousal bereavement, or loss of income—the platform automatically determines newly unlocked benefits, alerts citizens, and prepares administrative next steps without requiring repeated manual applications.
 
-In addition to citizen-facing empowerment, the platform equips Panchayat Talati officers and state administrators with an algorithmic data integrity engine. Through probabilistic multi-signal record linkage, the system detects duplicate family registrations, prevents synthetic identity inflation, and ensures public treasury resources reach genuine beneficiaries.
+In addition, the platform adheres strictly to the **Digital Personal Data Protection (DPDP) Act 2023**, redacting sensitive personal data (income figures, caste community classification, landholdings, clinical medical records, phone numbers, full street addresses, and exact birth dates) for administrative and public oversight, while granting authenticated household owners unredacted access to their own records.
 
 ---
 
-## Core System Capabilities & Features
+## System Architecture
 
 ```
-                               ┌────────────────────────────────────────────────┐
-                               │            GUJARAT FAMILY ID SYSTEM            │
-                               │  "One Family, One Identity, Complete Welfare"  │
-                               └───────────────────────┬────────────────────────┘
-                                                       │
-         ┌──────────────────────────────┬──────────────┴───────────────┬──────────────────────────────┐
-         ▼                              ▼                              ▼                              ▼
-┌──────────────────┐          ┌───────────────────┐          ┌───────────────────┐          ┌──────────────────┐
-│  PROACTIVE LIFE  │          │  20 DECLARATIVE   │          │  PROBABILISTIC    │          │  TRILINGUAL      │
-│  EVENT SIMULATOR │          │  WELFARE SCHEMES  │          │  DEDUPLICATION    │          │  CIVIC COPILOT   │
-│  - 11 transitions│          │  - Dual-scope eval│          │  - 4-signal model │          │  - 5-step intake │
-│  - Before/after  │          │  - Dynamic logic  │          │  - Weight tuning  │          │  - Web Speech TTS│
-│  - Audit history │          │  - Action routes  │          │  - Triage flow    │          │  - Action plan   │
-└──────────────────┘          └───────────────────┘          └───────────────────┘          └──────────────────┘
+                                ┌─────────────────────────────────────────────────────────┐
+                                │             GUJARAT FAMILY ID PLATFORM                  │
+                                │   "One Family, One Identity, Complete Welfare Delivery" │
+                                └────────────────────────────┬────────────────────────────┘
+                                                             │
+         ┌──────────────────────────────┬────────────────────┴───────────────┬──────────────────────────────┐
+         ▼                              ▼                                    ▼                              ▼
+┌──────────────────┐          ┌───────────────────┐                ┌───────────────────┐          ┌──────────────────┐
+│  PROACTIVE LIFE  │          │  20 DECLARATIVE   │                │  DPDP ACT 2023    │          │  PROBABILISTIC   │
+│  EVENT ENGINE    │          │  WELFARE SCHEMES  │                │  PRIVACY SHIELD   │          │  DEDUPLICATION   │
+│  - 11 transitions│          │  - Dual-scope eval│                │  - Income & Caste │          │  - 4-signal model│
+│  - Before/after  │          │  - Dynamic logic  │                │  - Medical & PII  │          │  - Weight tuning │
+│  - Audit history │          │  - Action routes  │                │  - RBAC redaction │          │  - Talati triage │
+└────────┬─────────┘          └─────────┬─────────┘                └─────────┬─────────┘          └────────┬─────────┘
+         │                              │                                    │                             │
+         └──────────────────────────────┴─────────────────┬──────────────────┴─────────────────────────────┘
+                                                          ▼
+                                ┌─────────────────────────────────────────────────────────┐
+                                │         HYBRID POSTGRESQL (SUPABASE) & IN-MEMORY        │
+                                │   - Families, Members, Life Events, Audit Trails, Pairs │
+                                └─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 1. Proactive Life Event Simulation & Eligibility Engine
+## Key Features & Capabilities
 
-Rather than requiring citizens to research eligibility criteria for every milestone, the platform implements an active life transition simulation sandbox that models real-world life changes and computes instant before-and-after entitlement differences.
+### 1. DPDP Act 2023 Sensitive Data Privacy & Masking Engine
 
-* **11 Realistic Life Transitions Modeled**:
-  1. **New Child Born (`new_child_born`)**: Welcomes a newborn into the household roster with custom name and gender assignment, immediately evaluating girl-child bonds, maternity grants, and nutritional subsidies.
-  2. **Member Turns 18 (`member_turns_18`)**: Transitions minors into legal adulthood, unlocking adult vocational training, higher secondary scholarships, and voting-age civic entitlements.
-  3. **Member Turns 60 (`member_turns_60`)**: Flags senior citizenship entry, automatically qualifying elders for state old-age pensions without visiting tehsil offices.
-  4. **Marital Status Transition → Widowed (`marital_status_widowed`)**: Records the loss of a spouse to activate widow social security pensions and single-parent aids.
-  5. **Death of Primary Breadwinner (`breadwinner_death`)**: Automatically flags the death of the household head, updating surviving spouse records and triggering immediate one-time bereavement assistance.
-  6. **Disability Certification (`disability_recorded`)**: Records medical disability certifications and severity percentages, unlocking specialized monthly disability pensions and assistive equipment kits.
-  7. **Income Shock / Decline (`income_decreased`)**: Models sudden economic hardship or crop loss, recalculating household poverty bands (AAY/BPL/LIG) and unlocking emergency subsidized rations.
-  8. **Upward Income Mobility (`income_increased`)**: Simulates income increases to test scheme graduation thresholds and ensure transparent income band compliance.
-  9. **Child Starts Primary School (`child_starts_school`)**: Enrolls school-age children (age 6+) into foundational education incentives and pre-matric scholarship tracks.
-  10. **Youth Starts College (`child_starts_college`)**: Marks higher secondary completion (age 17+), unlocking higher education tuition waivers and post-matric scholarship programs.
-  11. **Maternal Pregnancy Recorded (`pregnancy_recorded`)**: Enrolls expectant mothers into institutional delivery support and maternal health tracking programs.
+In strict compliance with the **Digital Personal Data Protection (DPDP) Act 2023** and Supreme Court constitutional privacy jurisprudence, the platform implements role-based data protection across all APIs and visual components:
 
-* **Real-Time Comparative Eligibility Diffing**:
-  * For every simulated transition, the engine evaluates both baseline state and simulated future state simultaneously.
-  * Generates an instant granular diff: **Gained Schemes** (newly qualified), **Lost Schemes** (graduated or disqualified), and **Unchanged Baseline**.
-  * Shows exact monetary impact and specific family member allocations.
+| Sensitive Category | Data Field | Admin / Talati / Public View (Redacted) | Authenticated Citizen Owner View | Privacy Rationale |
+| :--- | :--- | :--- | :--- | :--- |
+| **Socio-Demographic** | `caste_category` | **`Protected Category`** | Actual category (`OBC Category`) | Prevents social profiling, bias, and caste discrimination |
+| **Financial / Economic** | `household_income_annual` | **`₹ •••••• (LIG Verified)`** | Actual figure (`₹1,10,000`) | Personal economic privacy; prevents predatory targeting |
+| **Asset Holdings** | `land_owned_acres` | **`Landholder (RoR Protected)`** | Actual acres (`1.5 Acres Land`) | Prevents predatory land acquisition & solicitation |
+| **Medical / Clinical** | `disability_percentage` | **`Specially Abled (Certified)`** | Clinical percentage (`Disability (40%)`) | Protected personal health & medical records |
+| **Maternal Health** | `is_pregnant` | **`Maternal Welfare (Protected)`** | `Pregnant Mother` | Protects maternal health privacy |
+| **Direct Contact** | `phone_number` | **`+91 98*** **210`** | `9876543210` | Prevents phone spam, phishing, and surveillance |
+| **Physical Residence** | `address` | **`[Street Address Redacted], Locality`** | Full street address | Physical security and door-level residence privacy |
+| **Exact Birth Details** | `dob` | **`1984-**-**`** | `1984-06-15` | Conceals day/month to prevent identity theft |
 
-* **Strict Civic Logic & Edge-Case Validation**:
-  * Prevents impossible or contradictory civic states (e.g., preventing duplicate child names in the same home, barring already 60+ individuals from re-turning 60, enforcing that only married members can become widowed, and restricting pregnancy entries strictly to alive female members within biological age bands).
-
-* **Persistent Audit History & Rollback Capabilities**:
-  * Every applied life event is chronologically recorded in an audit trail with timestamp, operator, specific delta metrics, and scheme changes.
-  * Allows one-click state restoration back to the baseline profile.
+* **Zero-Leakage Backend Pipeline**: Scheme eligibility rules run against authentic records on the server; the output payload is sanitized via [`src/lib/privacy.ts`](file:///d:/Developer/Pravi/PraviBillions/src/lib/privacy.ts) before transmission over the wire.
+* **Audit Integrity with Privacy**: Even in administrative deduplication comparison modals ([`/integrity`](file:///d:/Developer/Pravi/PraviBillions/src/app/integrity/page.tsx)), field discrepancy tables display masked values (`+91 98*** **210`, `[Street Redacted]`, `Protected Category`) while preserving 100% accurate mathematical match scores (`exact`, `near`, `different`).
 
 ---
 
-### 2. Comprehensive 20-Scheme Declarative Engine
+### 2. Proactive Life Event Simulation & Eligibility Sandbox
 
-The platform encodes 20 flagship state (Gujarat) and national (Government of India) welfare programs into deterministic, rule-based predicates.
+Instead of forcing citizens to research government programs every time their circumstances change, the platform models real-world life milestones in memory and computes instant before-and-after entitlement differences:
 
-* **Dual-Scope Evaluation (Household vs. Individual Member)**:
-  * **Family-Scoped Schemes**: Evaluated at the collective household unit level (e.g., housing conditions, cumulative annual income, total landholding, ration band).
-  * **Member-Scoped Schemes**: Evaluated individually for every living family member (e.g., age, gender, education status, marital status, disability percentage, occupation).
+* **11 Life Transitions Modeled**:
+  1. **New Child Born (`new_child_born`)**: Welcomes a newborn with customizable name and gender, evaluating girl-child bonds, maternity grants, and nutritional subsidies.
+  2. **Member Turns 18 (`member_turns_18`)**: Transitions minors into adulthood, unlocking vocational training, higher secondary scholarships, and civic entitlements.
+  3. **Member Turns 60 (`member_turns_60`)**: Flags senior citizenship entry, qualifying elders for state old-age pensions automatically.
+  4. **Marital Status Transition → Widowed (`marital_status_widowed`)**: Records spousal loss to activate widow social security pensions and single-parent aids.
+  5. **Death of Primary Breadwinner (`breadwinner_death`)**: Automatically flags household head demise, updating surviving spouse records and triggering one-time bereavement assistance.
+  6. **Disability Certification (`disability_recorded`)**: Records certified disability, unlocking monthly disability pensions and assistive kits.
+  7. **Income Shock / Crop Loss (`income_decreased`)**: Models sudden economic hardship, recalculating poverty bands (AAY/BPL/LIG) and emergency subsidized rations.
+  8. **Upward Income Mobility (`income_increased`)**: Simulates income increases to test scheme graduation thresholds.
+  9. **Child Starts Primary School (`child_starts_school`)**: Enrolls school-age children (age 6+) into foundational education incentives and pre-matric scholarships.
+  10. **Youth Starts College (`child_starts_college`)**: Marks higher secondary completion (age 17+), unlocking higher education tuition waivers.
+  11. **Maternal Pregnancy Recorded (`pregnancy_recorded`)**: Enrolls expectant mothers into institutional delivery and maternal healthcare support.
 
-| Scheme Name | Administrative Domain | Scope | Primary Eligibility Factors | Benefit Profile |
+* **Real-Time Comparative Diffing**: Computes **Gained Schemes**, **Lost Schemes**, and **Unchanged Schemes** with exact rupee benefits and member assignments.
+* **Immutable Audit Trail**: All applied life events are logged with timestamp, operator, parameters, and eligibility delta, with one-click rollback to baseline.
+
+---
+
+### 3. 20 Flagship State & Central Declarative Schemes
+
+The platform encodes 20 flagship state (Gujarat) and national (Government of India) welfare programs into deterministic, rule-based pure functions:
+
+| Scheme Name | Department / Domain | Scope | Primary Eligibility Criteria | Benefit Profile |
 | :--- | :--- | :--- | :--- | :--- |
 | **National Family Benefit Scheme (NFBS)** | Social Security | Family | Head death, age 18–59, BPL/AAY band | ₹20,000 one-time bereavement grant |
 | **Vridh Sahay (Old-Age Pension)** | Senior Welfare | Member | Senior 60+, income < ₹1.2L (rural) / ₹1.5L (urban) | ₹1,000–₹1,250 monthly pension |
@@ -83,111 +107,221 @@ The platform encodes 20 flagship state (Gujarat) and national (Government of Ind
 | **Post-Matric Scholarship (SC)** | Higher Education | Member | SC community, age 17–30, higher secondary/college | Full tuition waiver + maintenance |
 | **Post-Matric Scholarship (ST)** | Higher Education | Member | ST community, age 17–30, higher secondary/college | Full tuition waiver + maintenance |
 | **Post-Matric Scholarship (OBC)** | Higher Education | Member | OBC community, higher secondary/college, income < ₹1L | Tuition grant + maintenance allowance |
-| **Vahli Dikri Yojana** | Girl Child Welfare | Member | Female child, ≤ 2 daughters in family, income ≤ ₹2L | ₹1,10,000 staggered education & marriage bond |
-| **PMAY Housing (EWS)** | Urban/Rural Shelter | Family | Kutcha dwelling, annual income ≤ ₹3,00,000 | Up to ₹2.67 Lakh interest subsidy |
-| **PMAY Housing (LIG)** | Urban/Rural Shelter | Family | Kutcha dwelling, income ₹3,00,001–₹6,00,000 | Up to ₹2.35 Lakh interest subsidy |
-| **Janani Suraksha Yojana** | Maternal Healthcare | Member | Pregnant female, institutional delivery, BPL/SC/ST | ₹700 (rural) / ₹600 (urban) cash aid |
-| **PMKVY Skill Development** | Youth Employment | Member | Age 15–45, unemployed/student | Free certified industry training + ₹8,000 stipend |
-| **Antyodaya Anna Yojana (AAY) Ration** | Food Security / PDS | Family | Ultra-poor, annual income ≤ ₹15,000 | Fixed 35 kg foodgrains at ₹2–₹3/kg monthly |
-| **Priority Household (PHH) Ration** | Food Security / PDS | Family | Below Poverty Line, income ₹15,001–₹1,00,000 | 5 kg foodgrains per member monthly |
+| **Vahli Dikri Yojana** | Girl Child Welfare | Member | Female child, ≤ 2 daughters in family, income ≤ ₹2L | ₹1,10,000 staggered bond |
+| **PMAY Housing (EWS)** | Shelter / Urban Dev | Family | Kutcha dwelling, annual income ≤ ₹3,00,000 | Up to ₹2.67 Lakh interest subsidy |
+| **PMAY Housing (LIG)** | Shelter / Urban Dev | Family | Kutcha dwelling, income ₹3,00,01–₹6,00,000 | Up to ₹2.35 Lakh interest subsidy |
+| **Janani Suraksha Yojana** | Maternal Health | Member | Pregnant female, institutional delivery, BPL/SC/ST | ₹700 (rural) / ₹600 (urban) cash aid |
+| **PMKVY Skill Development** | Youth Employment | Member | Age 15–45, unemployed or student | Free training + ₹8,000 stipend |
+| **Antyodaya Anna Yojana (AAY) Ration** | Food & Civil Supplies | Family | Ultra-poor, annual income ≤ ₹15,000 | Fixed 35 kg foodgrains at ₹2–₹3/kg |
+| **Priority Household (PHH) Ration** | Food & Civil Supplies | Family | Below Poverty Line, income ₹15,001–₹1,00,000 | 5 kg foodgrains per member monthly |
 | **Pre-Matric Scholarship (SC/ST)** | School Education | Member | SC/ST students, age 6–16, Class 1–10, income ≤ ₹2L | Monthly stipend + annual grant |
-| **Manav Garima Yojana** | Micro-Livelihood | Member | SC/ST/OBC, BPL status, artisan/tradesperson | Equipment & professional toolkit worth ₹4,000 |
-| **Palak Mata Pita Yojana** | Orphan Child Support | Member | Orphaned minor (< 18 yrs), family income ≤ ₹1.2L | ₹3,000 monthly foster support per child |
+| **Manav Garima Yojana** | Micro-Livelihood | Member | SC/ST/OBC, BPL status, artisan/tradesperson | Equipment toolkit worth ₹4,000 |
+| **Palak Mata Pita Yojana** | Foster Care | Member | Orphaned minor (< 18 yrs), family income ≤ ₹1.2L | ₹3,000 monthly support per child |
 | **Kanya Kelavni Mahotsav** | Girl Child Retention | Member | Female child in school, age 6–18, BPL family | ₹3,000–₹5,000 annual academic grant |
-| **Indira Gandhi Widow Pension (IGNWPS)** | Central Social Security | Member | Widowed female, age 40–79, BPL certified | ₹300 monthly central stipend + state top-up |
-| **Indira Gandhi Disability Pension (IGNDPS)** | Central Social Security | Member | Severe disability (80%+), age 18–79, BPL certified | ₹300 monthly central stipend + state top-up |
-
-* **Prescriptive Administrative Guidance**:
-  * Every eligible scheme provides exact, actionable instructions indicating which physical nodal centers to visit (District Social Welfare Office, Mamlatdar, Taluka Supply Office, e-Gram Center, Anganwadi, Primary Health Center) and which state web portals handle digital submissions (Digital Gujarat, e-Samaj Kalyan, PMAY-MIS, NSP).
+| **Indira Gandhi Widow Pension (IGNWPS)** | Central Social Assistance | Member | Widowed female, age 40–79, BPL certified | ₹300/mo central + state top-up |
+| **Indira Gandhi Disability Pension (IGNDPS)**| Central Social Assistance | Member | Severe disability (80%+), age 18–79, BPL certified | ₹300/mo central + state top-up |
 
 ---
 
-### 3. Probabilistic Registry Deduplication & Integrity Engine
+### 4. Probabilistic Deduplication & Registry Integrity Engine
 
-Duplicate identity entries, ghost beneficiaries, and cross-district ration hoarding represent significant drains on state budgets. The platform features an automated deduplication and registry integrity engine operating on probabilistic matching algorithms.
+Detects ghost beneficiaries, duplicate enrollments, and synthetic identity inflation:
 
-* **Multi-Signal Similarity Scoring Pipeline (100-Point Composite Model)**:
-  * **Head & Spouse Name Similarity (Weight: 20 pts)**: Computes lexical and phonetic similarity using Dice coefficient matching combined with normalized Levenshtein edit distance, penalizing spelling variations in regional transliterations.
-  * **Normalized Address & Pincode Matching (Weight: 10 pts)**: Normalizes street types, quarters, and societal nomenclature while checking for identical postal code locality clusters.
-  * **Head of Household Date of Birth Proximity (Weight: 30 pts)**: Detects exact birthday matches as well as 30-day and 365-day typo distances common in manual registry entry.
-  * **Sanitized Telephone Matching (Weight: 40 pts)**: Compares normalized 10-digit mobile numbers across family units.
-
-* **Configurable Administrative Tuning Controls**:
-  * Officers can dynamically adjust individual signal weights and overall confidence thresholds (default: 50%) via real-time sliders to calibrate sensitivity for deep registry re-scans.
-
-* **Side-by-Side Granular Field Concordance**:
-  * Displays high-risk duplicate candidate pairs side-by-side with color-coded comparison badges marking fields as **Exact Match**, **Near Match** (with similarity percentage), or **Divergent**.
-  * Breaks down Head of Household names, spouse names, full address lines, PIN codes, contact numbers, birth dates, district jurisdictions, and household sizes.
-
-* **Administrative Triage Workflow**:
-  * Talati officers can examine flagged pairs and record official verdicts: **Confirm Duplicate** (marking records for consolidation), **Mark False Positive** (clearing benign matches), or leave as **Pending** for field verification.
+* **4-Signal Linkage Model (100-Point Composite Score)**:
+  * **Head & Spouse Name Similarity (20 pts)**: Dice coefficient + normalized Levenshtein edit distance.
+  * **Normalized Address & Pincode (10 pts)**: Normalizes street types and postal locality clusters.
+  * **Head of Household DOB Proximity (30 pts)**: Detects exact and near birthday typo distances.
+  * **Sanitized Telephone Matching (40 pts)**: Compares normalized 10-digit mobile numbers.
+* **Dynamic Weight & Threshold Tuning**: Real-time sliders allow officers to tune confidence thresholds (default: 50%) and re-scan the entire database on the fly.
+* **Talati Triage Workflow**: Officers can inspect discrepancies side-by-side and mark pairs as **Confirmed Duplicate**, **False Positive**, or **Pending**.
 
 ---
 
-### 4. Interactive Visual Family Tree & Generational Hierarchy
+### 5. Interactive Generational Family Tree View
 
-The household portal replaces flat tabular rosters with an interactive generational family tree visualizing the complete structure of the household.
-
-* **Generational Tiering**:
-  * Automatically organizes family members into three clear generational tiers: **Elder Generation** (grandparents/parents), **Household Anchor** (head of household and spouse), and **Next Generation** (children and younger dependents).
-* **Targeted Scheme Association**:
-  * Directly links individual welfare entitlements to the specific member card within the tree (e.g., girl-child milestone grants displayed under daughter cards; old-age pensions tied directly to grandparent cards).
-* **Direct Sandbox Dispatch**:
-  * Officers and citizens can click on any node in the tree to trigger context-aware life event simulations specifically pre-filled for that individual member.
+* Replaces flat tables with an interactive tree organizing families into three generational tiers:
+  * **Elder Generation**: Parents and grandparents.
+  * **Household Anchor**: Head of household and spouse.
+  * **Next Generation**: Children and dependents.
+* Displays directly mapped welfare entitlements under each member node.
+* Supports 1-click dispatch into the Life-Event Simulator pre-filled for that individual.
 
 ---
 
-### 5. Gujarat Digital Smart Family Card & NFSA Foodgrain Quota
+### 6. Gujarat Digital Smart Card & NFSA Ration Calculator
 
-Every verified household profile generates an official digital credential modeled after state civic identity documents.
-
-* **Digital Smart Family Card**:
-  * Displays the unique 12-digit Gujarat Household ID, district of registry, head of household identification, official QR code verification badge, and 100% Aadhaar e-KYC status indicators.
-  * Supports direct high-resolution citizen printing and digital download for distribution at Gram Panchayat centers.
-
-* **Automated Monthly NFSA Foodgrain Calculator**:
-  * Dynamically computes monthly Public Distribution System (PDS) ration grain allotments in real time based on household economic categorization and active head count:
-    * **Antyodaya Anna Yojana (AAY)**: Flat 35 kg foodgrain basket per household per month (subsidized wheat, rice, and coarse grains).
-    * **Priority Household (PHH)**: 5 kg grain quota per living member per month (split into 3 kg wheat, 1.5 kg rice, 0.5 kg coarse grains).
+* **Printable Digital Smart Card**: Features 12-digit Family ID, Ashoka emblem, biometric QR code, and Aadhaar e-KYC verified status. Supports print and PDF download.
+* **NFSA Monthly Foodgrain Calculator**:
+  * **AAY**: 35 kg grain basket (wheat, rice, coarse grains) per household.
+  * **PHH**: 5 kg per living member per month (3 kg wheat, 1.5 kg rice, 0.5 kg coarse grains).
 
 ---
 
-### 6. Trilingual Civic Welfare Copilot (Voice-Enabled Assistant)
+### 7. Trilingual Voice-Enabled Civic Copilot
 
-For unassisted citizen discovery and rural accessibility, the platform provides an inclusive, step-by-step welfare assistant.
-
-* **Conversational 5-Step Intake**:
-  1. **Language Preference**: Allows switching between English, Hindi, and Gujarati at any stage.
-  2. **Geography & Jurisdiction**: Selection across all 33 Gujarat administrative districts, distinguishing Rural Gram Panchayats from Urban Municipalities.
-  3. **Household Roster Builder**: Dynamic interface allowing citizens to add family members, ages, genders, relationships, occupations, and certified disability percentages.
-  4. **Socioeconomic Classification**: Income sliders and social category selection (General, OBC, SC, ST) with automatic poverty band indexing.
-  5. **Dwelling & Landholding Assessment**: Captures kutcha vs. pucca housing structure and agricultural land acreage.
-
-* **Integrated Web Speech API Voice Synthesis (TTS)**:
-  * Full audio readout of all intake questions, category explanations, and final scheme results in native **Gujarati**, **Hindi**, and **English**.
-  * Includes audio controls to play, pause, and replay guidance for citizens with limited digital or textual literacy.
-
-* **Personalized Welfare Action Plan**:
-  * Generates an immediate printable roadmap of all qualified state programs, summarizing monthly financial benefits, required verification documents, and designated local administrative offices.
+* **Conversational 5-Step Intake**: Language $\rightarrow$ Geography (33 districts) $\rightarrow$ Roster $\rightarrow$ Socio-economic $\rightarrow$ Dwelling.
+* **Web Speech API Voice Synthesis (TTS)**: Full audio readouts in native **Gujarati**, **Hindi**, and **English**.
+* **Personalized Welfare Roadmap**: Summary of monthly financial benefits, required documents, and local administrative nodal centers.
 
 ---
 
-### 7. Dual-Persona Civic Architecture & Localization
+### 8. GIGW Accessibility & Custom Design System
 
-The application is structured to serve two distinct user cohorts through unified data models:
-
-* **Citizen Household Experience**:
-  * Tailored for household members to inspect their own smart card, review monthly ration allocations, understand family welfare rights, and test how future life events will impact their entitlements.
-* **Administrative / Talati Officer Experience**:
-  * Built for Panchayat officials, Mamlatdar staff, and social welfare inspectors to audit district registries, triage duplicate flags, simulate life event updates on behalf of visiting citizens, and monitor cross-district welfare coverage.
-* **Native Trilingual Support (English, हिन्दी, ગુજરાતી)**:
-  * Complete, fluent trilingual translations across every page, dashboard metric, dialog modal, scheme specification, and status indicator.
+* **GIGW 3.0 Compliance**: Integrated font scaling (`A` standard, `A+` large) with smooth transitions.
+* **Gujarat Sandstone Alabaster & Somnath Royal Teal Design System**:
+  * **Alabaster & Sandstone Canvas**: `#FAF8F2`, `#FAF7F0`, `#F5EFE4`.
+  * **Somnath Royal Teal**: `#133B42`, `#1A4B54`.
+  * **Gujarat Saffron & Green Accents**: `#D46E38`, `#28604A`.
+* **ReactBits Visual Componentry**:
+  * `SpotlightCard`: Mouse-tracking interactive glow.
+  * `BorderBeam`: Animated border light beam.
+  * `ShinyText`: Dynamic shimmering typography.
+  * `AnimatedCounter`: Spring-interpolated statistical counters.
+  * `AuroraGlow`: Ambient fluid lighting.
 
 ---
 
-## Architectural Principles & Integrity
+## Technology Stack
 
-* **Declarative Business Logic**: Scheme eligibility rules and life event mutation operations are defined as deterministic pure functions, decoupling civic policy rules from presentation layers.
-* **Zero Form Redundancy**: A single household identity model powers simulations, deduplication audits, and welfare discovery simultaneously, eliminating redundant data entry.
-* **Auditability & Traceability**: All life events preserve immutable before-and-after snapshots, creating an audit-ready trail for state social audits.
-* **Demographic Realism**: Seeded across synthetic household profiles reflecting genuine Gujarat demographic distributions, caste categories, income distributions, and geographical districts.
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | Next.js 16.3.5 (Turbopack, App Router) | SSR, SSG, Server Actions, Dynamic API Routes |
+| **Core UI** | React 19.0.0, TypeScript 5 | Component architecture, strict type safety |
+| **Styling** | Tailwind CSS v4, Lucide React | Modern utility styling, SVG civic icon set |
+| **Animations** | Motion (Framer Motion) | Micro-interactions, spring physics, layout animations |
+| **State & Fetching** | TanStack React Query v5 | Server state caching, optimistic updates, query invalidation |
+| **Database** | PostgreSQL (via Supabase) | Persistent civic records, RLS policies, connection pooling |
+| **Data Protection** | Custom DPDP Act 2023 Masking Engine | Role-based redaction of PII, income, caste, and health data |
+| **Accessibility** | Custom AccessibilityProvider | GIGW 3.0 / WCAG 2.1 AA font scaling and contrast compliance |
+| **Localization** | Custom LanguageContext | Trilingual support (English, हिन्दी, ગુજરાતી) |
+
+---
+
+## Database Architecture & Schema
+
+The platform integrates with **PostgreSQL via Supabase** with automatic memory fallbacks.
+
+### Tables Overview
+1. `families`: 12-digit household records, district, area type, annual income, caste category, landholding, housing, contact, pincode.
+2. `family_members`: Member demographics, relation to head, DOB, gender, marital status, disability, pregnancy, alive status.
+3. `life_event_logs`: Audit log of applied transitions, parameters, before/after diffs, timestamps.
+4. `duplicate_pairs`: Flagged duplicate candidate records, signal scores, field comparisons, and Talati audit status.
+5. `user_profiles`: Authentication records, email, role (`citizen` vs `admin`), and linked `family_id`.
+
+### Database Setup
+To initialize or replicate the database schema, run the DDL in Supabase SQL Editor:
+```sql
+-- See full schema in src/lib/supabase/schema.sql
+CREATE TABLE IF NOT EXISTS families (
+  family_id VARCHAR(12) PRIMARY KEY,
+  district VARCHAR(50) NOT NULL,
+  household_income_annual NUMERIC NOT NULL DEFAULT 0,
+  income_band VARCHAR(10) NOT NULL,
+  caste_category VARCHAR(20) NOT NULL DEFAULT 'general',
+  land_owned_acres NUMERIC NOT NULL DEFAULT 0,
+  house_type VARCHAR(20) NOT NULL DEFAULT 'pucca',
+  phone_number VARCHAR(30),
+  address TEXT NOT NULL,
+  pincode VARCHAR(10) NOT NULL,
+  area_type VARCHAR(20) NOT NULL DEFAULT 'rural',
+  last_updated TIMESTAMPTZ DEFAULT NOW(),
+  created_by VARCHAR(100) DEFAULT 'system'
+);
+```
+
+To migrate initial Gujarat synthetic seed data to PostgreSQL:
+```bash
+npm run migrate:supabase
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- **Node.js**: `v18.17.0` or newer (`v20+` recommended)
+- **npm**: `v9+` or **pnpm** / **yarn**
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/kavya020805/PraviBillions.git
+cd PraviBillions
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your credentials:
+```env
+# Supabase PostgreSQL Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Direct PostgreSQL Connection (Optional)
+DATABASE_URL=postgresql://postgres:password@db.your-project.supabase.co:5432/postgres
+```
+> *Note: If Supabase variables are not provided, the platform automatically runs on high-fidelity in-memory seed data with 100% feature availability.*
+
+### 4. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 5. Production Build & Typecheck
+```bash
+# Typecheck
+npx tsc --noEmit
+
+# Production bundle build
+npm run build
+
+# Start production server
+npm run start
+```
+
+---
+
+## Demo Personas & Testing
+
+| Persona Role | Email | Password | Access Rights |
+| :--- | :--- | :--- | :--- |
+| **Citizen (Household Owner)** | `citizen@gujarat.gov.in` | `Citizen@123` | **Full Unmasked Access** to Patel Family (`240100000001`). Can view actual income, caste, phone, address, and commit life events. |
+| **Talati / Administrative Officer** | `admin@gujarat.gov.in` | `Admin@123` | **Administrative Access across Gujarat**. Cross-district duplicate audits, registry management. **DPDP Act 2023 Masking Active** (PII, income, caste, and health data are redacted). |
+
+---
+
+## Deployment to Vercel
+
+1. Push your repository to GitHub (`main` branch).
+2. Go to [Vercel Dashboard](https://vercel.com/) and click **"Add New..." $\rightarrow$ "Project"**.
+3. Import the `PraviBillions` repository.
+4. Set Framework Preset to **Next.js**.
+5. In **Environment Variables**, add:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+6. Click **Deploy**. Vercel will automatically build and deploy the production bundle.
+
+---
+
+## Standards & Governance Compliance
+
+* **Digital Personal Data Protection (DPDP) Act 2023**: Implements purpose limitation, data minimization, and automated redaction of sensitive socio-demographic and financial attributes.
+* **Guidelines for Indian Government Websites (GIGW 3.0)**: Supports trilingual navigation, high-contrast readability, and `A`/`A+` font scaling.
+* **W3C WCAG 2.1 Level AA**: Semantic HTML elements, accessible form labels, keyboard navigability, and ARIA roles.
+
+---
+
+## License
+
+This project is released under the **MIT License**. Developed as an open civic innovation prototype for digital public infrastructure in Gujarat.
